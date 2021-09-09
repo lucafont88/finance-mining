@@ -1,19 +1,23 @@
+from typing import List
 import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn import linear_model
-import numpy as np
+class DataLoader:
 
-dati = pd.read_csv("https://raw.githubusercontent.com/lucafont88/test_automatic_repo/storing/eurusd_test_fx1.csv")
+    def __init__(self):
+        pass
 
+    def load_data_from_url(self, url) -> List[pd.DataFrame]:
+        self.__validate_csv_url(url)
+        return pd.read_csv(url)
 
-print(dati.head())
+    def load_data(self, url_list: List[str]):
+        df_list: List[pd.DataFrame] = []
+        for url in url_list:
+            df = self.load_data_from_url(url)
+            df_list.append(df)
+        return df_list
 
-fig, ax = plt.subplots()  # Create a figure and an axes.
-ax.plot(list(dati['index']), list(dati['high']), label='High')
-ax.plot(list(dati['index']), list(dati['low']), label='Low')
-ax.set_xlabel('tick')  # Add an x-label to the axes.
-ax.set_ylabel('normalized value')  # Add a y-label to the axes.
-ax.set_title("TEST Forex")  # Add a title to the axes.
-ax.legend()  # Add a legend.
-
-plt.show()
+    def __validate_csv_url(self, url):
+        if url is None:
+            raise ValueError("url is None")
+        if url.endswith(".csv") is False:
+            raise ValueError("url is not csv")
