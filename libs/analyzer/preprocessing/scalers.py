@@ -46,3 +46,20 @@ class SimplePreprocessEngine:
         scaler = preprocessing.MaxAbsScaler().fit(train_data)
         data_transformed = scaler.transform(train_data)
         return data_transformed
+
+    @staticmethod
+    def robust_outlier_scaler(train_data: np.array):
+        """
+        Scale features using statistics that are robust to outliers.
+        This Scaler removes the median and scales the data according to the quantile range (defaults to IQR: Interquartile Range). 
+        The IQR is the range between the 1st quartile (25th quantile) and the 3rd quartile (75th quantile).
+        Centering and scaling happen independently on each feature by computing the relevant statistics on the samples 
+        in the training set.
+
+        :param train_data: Train data
+
+        :return: Robust outlier scaled train data
+        """
+        scaler = preprocessing.RobustScaler().fit(train_data)
+        data_transformed = scaler.transform(train_data)
+        return data_transformed
