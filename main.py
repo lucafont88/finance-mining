@@ -5,7 +5,6 @@ from typing import List
 from libs.data_loader.file_to_load_reader import FileToLoadReader
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn import linear_model
 import numpy as np
 from libs.utility.secret_manager import SecretManager
 from libs.data_loader.data_loader import DataLoader
