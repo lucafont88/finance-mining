@@ -1,3 +1,5 @@
+from libs.plotting.plot_engine import PlotEngine
+from libs.plotting.plot_model import PlotModel
 from typing import List
 from libs.data_loader.file_to_load_reader import FileToLoadReader
 import pandas as pd
@@ -31,14 +33,16 @@ for data_frame in data:
 intraday: pd.DataFrame = data[0]
 daily: pd.DataFrame = data[1]
 
-# Plotting
-fig_intraday, axs_intraday = plt.subplots()  # Create a figure and an axes.
-axs_intraday.plot(list(intraday['index']), list(intraday['high']), label='High')
-axs_intraday.plot(list(intraday['index']), list(intraday['low']), label='Low')
-axs_intraday.set_xlabel('tick')  # Add an x-label to the axes.
-axs_intraday.set_ylabel('normalized value')  # Add a y-label to the axes.
-axs_intraday.set_title("EurUsd Intraday 1min")  # Add a title to the axes.
-axs_intraday.legend()  # Add a legend.
+x1 = list(intraday['index'])
+y1 = list(intraday['high'])
+label1 = 'High'
+x2 = list(intraday['index'])
+y2 = list(intraday['low'])
+label2 = 'Low'
+
+plot_model = PlotModel('EurUsd daily 1min', 'tick', 'price', x1, y1, label1, x2, y2, label2)
+plot_engine = PlotEngine()
+plot_engine.plot(plot_model)
 
 # fig_daily, axs_daily = plt.subplots()  # Create a figure and an axes.
 # axs_daily.plot(list(daily['index']), list(daily['high']), label='High')
@@ -49,4 +53,4 @@ axs_intraday.legend()  # Add a legend.
 # axs_daily.legend()  # Add a legend.
 
 
-plt.show()
+# plt.show()
