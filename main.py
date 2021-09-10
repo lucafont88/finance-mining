@@ -40,13 +40,13 @@ axs_intraday.set_ylabel('normalized value')  # Add a y-label to the axes.
 axs_intraday.set_title("EurUsd Intraday 1min")  # Add a title to the axes.
 axs_intraday.legend()  # Add a legend.
 
-fig_daily, axs_daily = plt.subplots()  # Create a figure and an axes.
-axs_daily.plot(list(daily['index']), list(daily['high']), label='High')
-axs_daily.plot(list(daily['index']), list(daily['low']), label='Low')
-axs_daily.set_xlabel('tick')  # Add an x-label to the axes.
-axs_daily.set_ylabel('normalized value')  # Add a y-label to the axes.
-axs_daily.set_title("EurUsd Daily 1min")  # Add a title to the axes.
-axs_daily.legend()  # Add a legend.
+# fig_daily, axs_daily = plt.subplots()  # Create a figure and an axes.
+# axs_daily.plot(list(daily['index']), list(daily['high']), label='High')
+# axs_daily.plot(list(daily['index']), list(daily['low']), label='Low')
+# axs_daily.set_xlabel('tick')  # Add an x-label to the axes.
+# axs_daily.set_ylabel('normalized value')  # Add a y-label to the axes.
+# axs_daily.set_title("EurUsd Daily 1min")  # Add a title to the axes.
+# axs_daily.legend()  # Add a legend.
 
 
 plt.show()
