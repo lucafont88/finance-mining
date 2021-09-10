@@ -63,3 +63,17 @@ class SimplePreprocessEngine:
         scaler = preprocessing.RobustScaler().fit(train_data)
         data_transformed = scaler.transform(train_data)
         return data_transformed
+
+    @staticmethod
+    def normalize(train_data: np.array, chosen_norm: str = 'l2'):
+        """
+        Normalization is the process of scaling individual samples to have unit norm. 
+        This process can be useful if you plan to use a quadratic form such as the dot-product 
+        or any other kernel to quantify the similarity of any pair of samples.
+
+        :param train_data: Train data
+        :param norm: The norm to use to normalize each non zero sample (or each non-zero feature if axis is 0). {‘l1’, ‘l2’, ‘max’}, default=’l2’
+
+        :return: Normalized train data
+        """
+        return preprocessing.normalize(train_data, chosen_norm)
