@@ -15,4 +15,3 @@ class PlotEngine:
         axs.set_ylabel(plot_model.y_label)  # Add a y-label to the axes.
         axs.set_title(plot_model.title)  # Add a title to the axes.
         axs.legend()  # Add a legend.
-        plt.show()

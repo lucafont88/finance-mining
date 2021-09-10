@@ -40,4 +40,3 @@ class LinearRegression:
         prediction = self.reg.predict(self.np_X)
         axs.scatter(self.np_X[:], self.np_Y[:], s=scatter_size, color=scatter_color)
         axs.plot(self.np_X[:], prediction, '-')
-        plt.show()

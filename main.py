@@ -1,3 +1,4 @@
+from libs.analyzer.regressions.linear_regression import LinearRegression
 from libs.plotting.plot_engine import PlotEngine
 from libs.plotting.plot_model import PlotModel
 from typing import List
@@ -24,11 +25,11 @@ print("---------------------------------")
 
 data: List[pd.DataFrame] = data_loader.load_data(csv_files)
 
-i = 1
-for data_frame in data:
-    print(f'Data Frame {i}:')
-    print(data_frame.head())
-    i += 1
+# i = 1
+# for data_frame in data:
+#     print(f'Data Frame {i}:')
+#     print(data_frame.head())
+#     i += 1
 
 intraday: pd.DataFrame = data[0]
 daily: pd.DataFrame = data[1]
@@ -44,13 +45,19 @@ plot_model = PlotModel('EurUsd daily 1min', 'tick', 'price', x1, y1, label1, x2,
 plot_engine = PlotEngine()
 plot_engine.plot(plot_model)
 
-# fig_daily, axs_daily = plt.subplots()  # Create a figure and an axes.
-# axs_daily.plot(list(daily['index']), list(daily['high']), label='High')
-# axs_daily.plot(list(daily['index']), list(daily['low']), label='Low')
-# axs_daily.set_xlabel('tick')  # Add an x-label to the axes.
-# axs_daily.set_ylabel('normalized value')  # Add a y-label to the axes.
-# axs_daily.set_title("EurUsd Daily 1min")  # Add a title to the axes.
-# axs_daily.legend()  # Add a legend.
 
+linear_regression_model_1 = LinearRegression(x1, y1)
+linear_regression_model_1.train()
+linear_regression_model_1.plot_model(title = 'Linear Regression Model 1')
 
-# plt.show()
+linear_regression_model_2 = LinearRegression(x2, y2)
+linear_regression_model_2.train()
+linear_regression_model_2.plot_model(title = 'Linear Regression Model 2')
+
+model_1_info = linear_regression_model_1.get_model_informations()
+model_2_info = linear_regression_model_2.get_model_informations()
+
+print(f'Model 1: {model_1_info}')
+print(f'Model 2: {model_2_info}')
+
+plt.show()
