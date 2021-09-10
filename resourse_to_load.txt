@@ -1,0 +1,2 @@
+eurusd_full_20210910.csv
+eurusd_full_daily_20210910.csv

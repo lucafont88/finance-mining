@@ -1,0 +1,3 @@
+https://raw.githubusercontent.com/lucafont88/test_automatic_repo/storing/eurusd_full_daily_20210910.csv
+eurusd_full_20210910.csv
+eurusd_full_daily_20210910.csv
