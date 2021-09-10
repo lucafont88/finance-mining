@@ -27,3 +27,26 @@ for data_frame in data:
     print(f'Data Frame {i}:')
     print(data_frame.head())
     i += 1
+
+intraday: pd.DataFrame = data[0]
+daily: pd.DataFrame = data[1]
+
+# Plotting
+fig_intraday, axs_intraday = plt.subplots()  # Create a figure and an axes.
+axs_intraday.plot(list(intraday['index']), list(intraday['high']), label='High')
+axs_intraday.plot(list(intraday['index']), list(intraday['low']), label='Low')
+axs_intraday.set_xlabel('tick')  # Add an x-label to the axes.
+axs_intraday.set_ylabel('normalized value')  # Add a y-label to the axes.
+axs_intraday.set_title("EurUsd Intraday 1min")  # Add a title to the axes.
+axs_intraday.legend()  # Add a legend.
+
+fig_daily, axs_daily = plt.subplots()  # Create a figure and an axes.
+axs_daily.plot(list(daily['index']), list(daily['high']), label='High')
+axs_daily.plot(list(daily['index']), list(daily['low']), label='Low')
+axs_daily.set_xlabel('tick')  # Add an x-label to the axes.
+axs_daily.set_ylabel('normalized value')  # Add a y-label to the axes.
+axs_daily.set_title("EurUsd Daily 1min")  # Add a title to the axes.
+axs_daily.legend()  # Add a legend.
+
+
+plt.show()
