@@ -65,4 +65,6 @@ print(stats)
 entropy: float = StatisticalAnalyzer.calculate_entropy(y1)
 print(f"Entropia {entropy}")
 
+StatisticalAnalyzer.relative_frequency(y1, 10, True)
+
 plt.show()
