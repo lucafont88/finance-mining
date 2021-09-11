@@ -62,5 +62,7 @@ print(f'Model 2: {model_2_info}')
 
 stats = StatisticalAnalyzer.analyze(y1)
 print(stats)
+entropy: float = StatisticalAnalyzer.calculate_entropy(y1)
+print(f"Entropia {entropy}")
 
 plt.show()
