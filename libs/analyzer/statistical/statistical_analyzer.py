@@ -23,6 +23,28 @@ class StatisticalAnalyzer:
         """
         return stats.entropy(data)
 
+    @staticmethod
+    def cumulated_frequency(data, num_bins: int) -> list:
+        """
+        This method is used to calculate the cumulated frequency of the data.
+        :param data: The data to calculate the cumulated frequency.
+        :param num_bins: The number of bins to use.
+
+        :return: The cumulated frequency of the data.
+        """
+        return stats.cumfreq(data, numbins=num_bins)
+
+    @staticmethod
+    def relative_frequency(data, num_bins: int) -> list:
+        """
+        This method is used to calculate the relative frequency of the data.
+        :param data: The data to calculate the relative frequency.
+        :param num_bins: The number of bins to use.
+        
+        :return: The relative frequency of the data.
+        """
+        return stats.relfreq(data, numbins=num_bins)
+
     def probability_density_function(data):
         """
         This method is used to analyze the probability density function.
