@@ -1,7 +1,7 @@
 from sklearn import preprocessing
 import numpy as np
 
-class SimplePreprocessEngine:
+class PreprocessScalers:
 
     @staticmethod
     def standard_scaler(train_data: np.array):

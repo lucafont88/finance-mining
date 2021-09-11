@@ -1,3 +1,4 @@
+from libs.analyzer.statistical.statistical_analyzer import StatisticalAnalyzer
 from libs.analyzer.regressions.linear_regression import LinearRegression
 from libs.plotting.plot_engine import PlotEngine
 from libs.plotting.plot_model import PlotModel
@@ -58,5 +59,8 @@ model_2_info = linear_regression_model_2.get_model_informations()
 
 print(f'Model 1: {model_1_info}')
 print(f'Model 2: {model_2_info}')
+
+stats = StatisticalAnalyzer.analyze(y1)
+print(stats)
 
 plt.show()
