@@ -1,3 +1,5 @@
+from libs.analyzer.analysis_provider import AnalysisProvider
+from libs.analyzer.analysis_model import AnalysisModel
 from scipy.stats.stats import CumfreqResult, RelfreqResult
 from libs.analyzer.statistical.statistical_analyzer import StatisticalAnalyzer
 from libs.analyzer.regressions.linear_regression import LinearRegression
@@ -49,19 +51,13 @@ plot_engine.plot(plot_model)
 x1 = axis_1.x
 y1 = axis_1.y
 
-linear_regression_model_1 = LinearRegression(x1, y1)
-linear_regression_model_1.train()
-linear_regression_model_1.plot_model(title = 'Linear Regression Model 1')
+analysys_model: AnalysisModel = AnalysisModel('test_analisi_1', x1, y1)
+analysis_provider: AnalysisProvider = AnalysisProvider(analysys_model)
+linear_regression_model = LinearRegression()
+analysis_provider.regression(linear_regression_model)
 
-# linear_regression_model_2 = LinearRegression(x2, y2)
-# linear_regression_model_2.train()
-# linear_regression_model_2.plot_model(title = 'Linear Regression Model 2')
+print(f'Model 1: {linear_regression_model.get_model_informations()}')
 
-model_1_info = linear_regression_model_1.get_model_informations()
-# model_2_info = linear_regression_model_2.get_model_informations()
-
-print(f'Model 1: {model_1_info}')
-# print(f'Model 2: {model_2_info}')
 
 stats = StatisticalAnalyzer.analyze(y1)
 print(stats)

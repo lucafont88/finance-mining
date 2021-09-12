@@ -1,12 +1,18 @@
+from libs.analyzer.regressions.abstract_regression import AbstractRegression
 from typing import List
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import linear_model
 import numpy as np
 
-class LinearRegression:
-    def __init__(self, x: List[float], y: List[float]):
+class LinearRegression(AbstractRegression):
+    def __init__(self):
+        super().__init__()
+
+    def set_x(self, x: List[float]) -> None:
         self.X = x
+
+    def set_y(self, y: List[float]) -> None:
         self.Y = y
 
     def train(self):
