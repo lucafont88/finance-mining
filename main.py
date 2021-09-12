@@ -7,24 +7,15 @@ from libs.analyzer.regressions.linear_regression import LinearRegression
 from libs.plotting.plot_engine import PlotEngine
 from libs.plotting.plot_model import Axis, PlotModel
 from typing import List
-from libs.data_loader.file_to_load_reader import FileToLoadReader
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-from libs.utility.secret_manager import SecretManager
-from libs.data_loader.data_loader import DataLoader
+
 
 SECRET_FILE = './secrets.txt'
 CSV_TO_LOAD_FILE = './resourse_to_load.txt'
 data_loader_provider = DataLoaderProvider(SECRET_FILE, CSV_TO_LOAD_FILE)
 data = data_loader_provider.load_data()
-
-
-# i = 1
-# for data_frame in data:
-#     print(f'Data Frame {i}:')
-#     print(data_frame.head())
-#     i += 1
 
 intraday: pd.DataFrame = data[0]
 # daily: pd.DataFrame = data[1]
