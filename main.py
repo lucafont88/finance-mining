@@ -2,7 +2,7 @@ from scipy.stats.stats import CumfreqResult, RelfreqResult
 from libs.analyzer.statistical.statistical_analyzer import StatisticalAnalyzer
 from libs.analyzer.regressions.linear_regression import LinearRegression
 from libs.plotting.plot_engine import PlotEngine
-from libs.plotting.plot_model import PlotModel
+from libs.plotting.plot_model import Axis, PlotModel
 from typing import List
 from libs.data_loader.file_to_load_reader import FileToLoadReader
 import pandas as pd
@@ -35,31 +35,33 @@ data: List[pd.DataFrame] = data_loader.load_data(csv_files)
 intraday: pd.DataFrame = data[0]
 # daily: pd.DataFrame = data[1]
 
-x1 = list(intraday['index'])
-y1 = list(intraday['high'])
-label1 = 'High'
-x2 = list(intraday['index'])
-y2 = list(intraday['low'])
-label2 = 'Low'
+axis_1: Axis = Axis('High', list(intraday['index']), list(intraday['high']))
+axis_2: Axis = Axis('Low', list(intraday['index']), list(intraday['low']))
 
-plot_model = PlotModel('EurUsd daily 1min', 'tick', 'price', x1, y1, label1, x2, y2, label2)
+axis_list: List[Axis] = [axis_1, axis_2]
+
+plot_model = PlotModel('EurUsd daily 1min', 'tick', 'price', axis_list)
 plot_engine = PlotEngine()
 plot_engine.plot(plot_model)
 
+# Mono analisi
+
+x1 = axis_1.x
+y1 = axis_1.y
 
 linear_regression_model_1 = LinearRegression(x1, y1)
 linear_regression_model_1.train()
 linear_regression_model_1.plot_model(title = 'Linear Regression Model 1')
 
-linear_regression_model_2 = LinearRegression(x2, y2)
-linear_regression_model_2.train()
-linear_regression_model_2.plot_model(title = 'Linear Regression Model 2')
+# linear_regression_model_2 = LinearRegression(x2, y2)
+# linear_regression_model_2.train()
+# linear_regression_model_2.plot_model(title = 'Linear Regression Model 2')
 
 model_1_info = linear_regression_model_1.get_model_informations()
-model_2_info = linear_regression_model_2.get_model_informations()
+# model_2_info = linear_regression_model_2.get_model_informations()
 
 print(f'Model 1: {model_1_info}')
-print(f'Model 2: {model_2_info}')
+# print(f'Model 2: {model_2_info}')
 
 stats = StatisticalAnalyzer.analyze(y1)
 print(stats)
