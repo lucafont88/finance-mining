@@ -2,36 +2,49 @@ from typing import Literal, Union
 from sklearn import preprocessing
 import numpy as np
 
-def apply_scaler(train_data: np.array, scaler_type: str, min_value: Union[int, float] = None, max_value: Union[int, float] = None, norm: Literal['l1', 'l2', 'max'] = None) -> np.array:
+class ScalerModel:
+    scaler_type: str
+    min_value: Union[int, float]
+    max_value: Union[int, float]
+    norm: Literal['l1', 'l2', 'max']
+
+    def __init__(self, scaler_type: str, min_value: Union[int, float] = None, max_value: Union[int, float] = None, norm: Literal['l1', 'l2', 'max'] = None) -> None:
+        self.scaler_type = scaler_type
+        self.min_value = min_value
+        self.max_value = max_value
+        self.norm = norm
+
+def apply_scaler(train_data: np.array, scaler_model: ScalerModel = None) -> np.array:
     """
     Applies a scaler to a given dataset.
-    :param train_data: The dataset to be scaled.
-    :param scaler_type: The type of scaler to be used.
-    :param min_value: The minimum value of the scaler.
-    :param max_value: The maximum value of the scaler.
-    :param norm: The norm of the normalizer.
+    :param scaler_model: ScalerModel object
 
     :return scaled data
     """
-    if scaler_type is None or scaler_type == '':
+    if scaler_model is None:
+        return train_data
+
+    if scaler_model.scaler_type is None or scaler_model.scaler_type == '':
         raise ValueError('Scaler type not specified.')
     
-    scaler_type = scaler_type.lower()
+    scaler_type = scaler_model.scaler_type.lower()
+
+    train_data = np.array(train_data).reshape(-1, 1)
 
     if scaler_type == 'standard_scaler':
         return PreprocessScalers.standard_scaler(train_data)
     elif scaler_type == 'min_max_scaler':
-        if min_value is None or max_value is None:
+        if scaler_model.min_value is None or scaler_model.max_value is None:
             raise ValueError('Min and max values not specified.')
-        return PreprocessScalers.min_max_scaler(train_data, min_value, max_value)
+        return PreprocessScalers.min_max_scaler(train_data, scaler_model.min_value, scaler_model.max_value)
     elif scaler_type == 'maximum_absolute_scaler':
         return PreprocessScalers.maximum_absolute_scaler(train_data)
     elif scaler_type == 'robust_outlier_scaler':
         PreprocessScalers.robust_outlier_scaler(train_data)
     elif scaler_type == 'normalizer':
-        if norm is None or norm == '':
+        if scaler_model.norm is None or scaler_model.norm == '':
             raise ValueError('Norm not specified.')
-        return PreprocessScalers.normalize(train_data, norm)
+        return PreprocessScalers.normalize(train_data, scaler_model.norm)
     else:
         raise ValueError('Scaler type not recognized.')
 

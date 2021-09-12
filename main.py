@@ -1,3 +1,5 @@
+from libs.analyzer.preprocessing import scalers
+from libs.analyzer.preprocessing.scalers import ScalerModel, apply_scaler
 from libs.data_loader.data_loader_provider import DataLoaderProvider
 from libs.analyzer.analysis_provider import AnalysisProvider
 from libs.analyzer.analysis_model import AnalysisModel
@@ -33,11 +35,14 @@ plot_engine.plot(plot_model)
 
 x1 = axis_1.x
 y1 = axis_1.y
+scaler_model = ScalerModel('min_max_scaler', -1, 1, None)
+y1 = apply_scaler(y1, scaler_model)
 
 analysys_model: AnalysisModel = AnalysisModel('test_analisi_1', x1, y1)
 analysis_provider: AnalysisProvider = AnalysisProvider(analysys_model)
 linear_regression_model = LinearRegression()
-analysis_provider.regression(linear_regression_model)
+
+analysis_provider.regression(linear_regression_model, None)
 
 print(f'Model 1: {linear_regression_model.get_model_informations()}')
 
