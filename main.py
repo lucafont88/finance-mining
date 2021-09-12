@@ -1,3 +1,4 @@
+from scipy.stats.stats import CumfreqResult, RelfreqResult
 from libs.analyzer.statistical.statistical_analyzer import StatisticalAnalyzer
 from libs.analyzer.regressions.linear_regression import LinearRegression
 from libs.plotting.plot_engine import PlotEngine
@@ -32,7 +33,7 @@ data: List[pd.DataFrame] = data_loader.load_data(csv_files)
 #     i += 1
 
 intraday: pd.DataFrame = data[0]
-daily: pd.DataFrame = data[1]
+# daily: pd.DataFrame = data[1]
 
 x1 = list(intraday['index'])
 y1 = list(intraday['high'])
@@ -65,7 +66,10 @@ print(stats)
 entropy: float = StatisticalAnalyzer.calculate_entropy(y1)
 print(f"Entropia {entropy}")
 
-StatisticalAnalyzer.relative_frequency(y1, 10, True)
-StatisticalAnalyzer.cumulated_frequency(y1, 25, True)
+rel_freq_result: RelfreqResult = StatisticalAnalyzer.relative_frequency(y1, 25, True)
+cum_freq_result: CumfreqResult = StatisticalAnalyzer.cumulated_frequency(y1, 25, True)
+
+print(f"Relative frequency: {rel_freq_result}")
+print(f"Cumulated frequency: {cum_freq_result}")
 
 plt.show()

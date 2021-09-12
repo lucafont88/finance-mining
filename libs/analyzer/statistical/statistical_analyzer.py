@@ -51,6 +51,7 @@ class StatisticalAnalyzer:
             ax2.bar(x, cumfreq.cumcount, width=cumfreq.binsize)
             ax2.set_title('Cumulative histogram')
             ax2.set_xlim([x.min(), x.max()])
+            return cumfreq
 
     @staticmethod
     def relative_frequency(data, num_bins: int, show_plot: bool = True) -> RelfreqResult:
@@ -72,6 +73,7 @@ class StatisticalAnalyzer:
             ax.bar(x, rel_freq.frequency, width=rel_freq.binsize)
             ax.set_title('Relative frequency histogram')
             ax.set_xlim([x.min(), x.max()])
+            return rel_freq
 
     # def probability_density_function(data):
     #     """
