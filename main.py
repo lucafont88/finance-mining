@@ -52,6 +52,7 @@ entropy: float = StatisticalAnalyzer.calculate_entropy(scaled_y)
 
 model_info: Dict[str, Any] = merge_dicts(linear_regression_model.get_model_informations(), stats._asdict())
 
+# TODO Da sistemare
 if np.isinf(entropy[0]):
     model_info['entropy'] = 'NA'
 if abs(entropy[0]) > 0.0001:
