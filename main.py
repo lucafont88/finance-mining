@@ -1,3 +1,4 @@
+from numpy import inf
 from libs.data_output.file_saver import FileSaver
 from libs.analyzer.preprocessing.scalers import ScalerModel
 from libs.data_loader.data_loader_provider import DataLoaderProvider
@@ -13,6 +14,7 @@ from typing import Any, Dict, List
 import pandas as pd
 import matplotlib.pyplot as plt
 import pprint
+import numpy as np
 
 PROMPT_DEBUG = False
 SHOW_PLOTS = True
@@ -49,12 +51,18 @@ stats = StatisticalAnalyzer.analyze(scaled_y)
 entropy: float = StatisticalAnalyzer.calculate_entropy(scaled_y)
 
 model_info: Dict[str, Any] = merge_dicts(linear_regression_model.get_model_informations(), stats._asdict())
-model_info['entropy'] = entropy
+
+if np.isinf(entropy[0]):
+    model_info['entropy'] = 'NA'
+if abs(entropy[0]) > 0.0001:
+    model_info['entropy'] = entropy[0]
+else:
+    model_info['entropy'] = 'NA'
 
 if PROMPT_DEBUG is True:
     print(f'Model: {linear_regression_model.get_model_informations()}')
     print(stats)
-print(f"Entropia {entropy}")
+    print(f"Entropia {entropy}")
 
 rel_freq_result: RelfreqResult = StatisticalAnalyzer.relative_frequency(scaled_y, 100, True)
 cum_freq_result: CumfreqResult = StatisticalAnalyzer.cumulated_frequency(scaled_y, 50, True)
