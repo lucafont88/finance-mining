@@ -36,24 +36,23 @@ plot_engine.plot(plot_model)
 x1 = axis_1.x
 y1 = axis_1.y
 scaler_model = ScalerModel('min_max_scaler', -1, 1, None)
-y1 = apply_scaler(y1, scaler_model)
-
 analysys_model: AnalysisModel = AnalysisModel('test_analisi_1', x1, y1)
 analysis_provider: AnalysisProvider = AnalysisProvider(analysys_model)
+scaled_y = analysis_provider.scale_data(scaler_model)
 linear_regression_model = LinearRegression()
 
-analysis_provider.regression(linear_regression_model, None)
+analysis_provider.regression(linear_regression_model)
 
 print(f'Model 1: {linear_regression_model.get_model_informations()}')
 
 
-stats = StatisticalAnalyzer.analyze(y1)
+stats = StatisticalAnalyzer.analyze(scaled_y)
 print(stats)
 entropy: float = StatisticalAnalyzer.calculate_entropy(y1)
 print(f"Entropia {entropy}")
 
-rel_freq_result: RelfreqResult = StatisticalAnalyzer.relative_frequency(y1, 25, True)
-cum_freq_result: CumfreqResult = StatisticalAnalyzer.cumulated_frequency(y1, 25, True)
+rel_freq_result: RelfreqResult = StatisticalAnalyzer.relative_frequency(scaled_y, 25, True)
+cum_freq_result: CumfreqResult = StatisticalAnalyzer.cumulated_frequency(scaled_y, 25, True)
 
 print(f"Relative frequency: {rel_freq_result}")
 print(f"Cumulated frequency: {cum_freq_result}")
