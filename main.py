@@ -12,6 +12,7 @@ from libs.utility.helpers import merge_dicts
 from typing import Any, Dict, List
 import pandas as pd
 import matplotlib.pyplot as plt
+import pprint
 
 PROMPT_DEBUG = False
 SHOW_PLOTS = True
@@ -53,7 +54,7 @@ model_info['entropy'] = entropy
 if PROMPT_DEBUG is True:
     print(f'Model: {linear_regression_model.get_model_informations()}')
     print(stats)
-    print(f"Entropia {entropy}")
+print(f"Entropia {entropy}")
 
 rel_freq_result: RelfreqResult = StatisticalAnalyzer.relative_frequency(scaled_y, 100, True)
 cum_freq_result: CumfreqResult = StatisticalAnalyzer.cumulated_frequency(scaled_y, 50, True)
@@ -62,7 +63,8 @@ if PROMPT_DEBUG is True:
     print(f"Relative frequency: {rel_freq_result}")
     print(f"Cumulated frequency: {cum_freq_result}")
 
-print(model_info)
+pp = pprint.PrettyPrinter(depth=4)
+pp.pprint(model_info)
 
 file_saver = FileSaver(OUTPUT_FILE)
 file_saver.save_json(model_info)
