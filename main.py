@@ -1,3 +1,4 @@
+from libs.data_output.file_saver import FileSaver
 from libs.analyzer.preprocessing.scalers import ScalerModel
 from libs.data_loader.data_loader_provider import DataLoaderProvider
 from libs.analyzer.analysis_provider import AnalysisProvider
@@ -7,11 +8,14 @@ from libs.analyzer.statistical.statistical_analyzer import StatisticalAnalyzer
 from libs.analyzer.regressions.linear_regression import LinearRegression
 from libs.plotting.plot_engine import PlotEngine
 from libs.plotting.plot_model import Axis, PlotModel
-from typing import List
+from libs.utility.helpers import merge_dicts
+from typing import Any, Dict, List
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
+PROMPT_DEBUG = False
+SHOW_PLOTS = True
+OUTPUT_FILE = './output_results.json'
 SECRET_FILE = './secrets.txt'
 CSV_TO_LOAD_FILE = './resourse_to_load.txt'
 data_loader_provider = DataLoaderProvider(SECRET_FILE, CSV_TO_LOAD_FILE)
@@ -40,18 +44,28 @@ scaled_y = analysis_provider.scale_data(scaler_model)
 
 linear_regression_model = analysis_provider.regression(LinearRegression())
 
-print(f'Model 1: {linear_regression_model.get_model_informations()}')
-
-
 stats = StatisticalAnalyzer.analyze(scaled_y)
-print(stats)
 entropy: float = StatisticalAnalyzer.calculate_entropy(scaled_y)
-print(f"Entropia {entropy}")
+
+model_info: Dict[str, Any] = merge_dicts(linear_regression_model.get_model_informations(), stats._asdict())
+model_info['entropy'] = entropy
+
+if PROMPT_DEBUG is True:
+    print(f'Model: {linear_regression_model.get_model_informations()}')
+    print(stats)
+    print(f"Entropia {entropy}")
 
 rel_freq_result: RelfreqResult = StatisticalAnalyzer.relative_frequency(scaled_y, 100, True)
 cum_freq_result: CumfreqResult = StatisticalAnalyzer.cumulated_frequency(scaled_y, 50, True)
 
-print(f"Relative frequency: {rel_freq_result}")
-print(f"Cumulated frequency: {cum_freq_result}")
+if PROMPT_DEBUG is True:
+    print(f"Relative frequency: {rel_freq_result}")
+    print(f"Cumulated frequency: {cum_freq_result}")
 
-plt.show()
+print(model_info)
+
+file_saver = FileSaver(OUTPUT_FILE)
+file_saver.save_json(model_info)
+
+if SHOW_PLOTS is True:
+    plt.show()

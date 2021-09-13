@@ -1,0 +1,41 @@
+{
+    "linear_regression_coefficents": [
+        [
+            8.080946175816144e-05
+        ]
+    ],
+    "linear_regression_intercept": [
+        -0.3185411743718959
+    ],
+    "linear_regression_parameters": {
+        "copy_X": true,
+        "fit_intercept": true,
+        "n_jobs": null,
+        "normalize": false,
+        "positive": false
+    },
+    "nobs": 5000,
+    "minmax": [
+        [
+            -1.0000000000000004
+        ],
+        [
+            1.0
+        ]
+    ],
+    "mean": [
+        -0.11655792470737138
+    ],
+    "variance": [
+        0.16069101122094007
+    ],
+    "skewness": [
+        0.3122889442422158
+    ],
+    "kurtosis": [
+        -0.41422674790304237
+    ],
+    "entropy": [
+        0
+    ]
+}
