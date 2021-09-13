@@ -1,3 +1,4 @@
+from libs.analyzer.polynomial.polynomial_engine import PolynomialEngine
 from numpy import inf
 from libs.data_output.file_saver import FileSaver
 from libs.analyzer.preprocessing.scalers import ScalerModel
@@ -15,6 +16,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import pprint
 import numpy as np
+from icecream import ic
+
 
 PROMPT_DEBUG = False
 SHOW_PLOTS = True
@@ -37,7 +40,6 @@ plot_engine = PlotEngine()
 plot_engine.plot(plot_model)
 
 # Mono analisi
-
 x1 = axis_1.x
 y1 = axis_1.y
 scaler_model = ScalerModel('min_max_scaler', -1, 1, None)
@@ -71,6 +73,15 @@ cum_freq_result: CumfreqResult = StatisticalAnalyzer.cumulated_frequency(scaled_
 if PROMPT_DEBUG is True:
     print(f"Relative frequency: {rel_freq_result}")
     print(f"Cumulated frequency: {cum_freq_result}")
+
+# TODO Polynomial Fitting
+polynomial_engine = PolynomialEngine()
+poly, x_poly = polynomial_engine.fit_polynomial(scaled_y, None, 2)
+
+ic(poly.powers_)
+ic(x_poly)
+
+# Output
 
 pp = pprint.PrettyPrinter(depth=4)
 pp.pprint(model_info)
