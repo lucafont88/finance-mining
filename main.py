@@ -50,7 +50,7 @@ print(stats)
 entropy: float = StatisticalAnalyzer.calculate_entropy(y1)
 print(f"Entropia {entropy}")
 
-rel_freq_result: RelfreqResult = StatisticalAnalyzer.relative_frequency(scaled_y, 25, True)
+rel_freq_result: RelfreqResult = StatisticalAnalyzer.relative_frequency(scaled_y, 50, True)
 cum_freq_result: CumfreqResult = StatisticalAnalyzer.cumulated_frequency(scaled_y, 25, True)
 
 print(f"Relative frequency: {rel_freq_result}")
