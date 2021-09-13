@@ -1,5 +1,4 @@
-from libs.analyzer.preprocessing import scalers
-from libs.analyzer.preprocessing.scalers import ScalerModel, apply_scaler
+from libs.analyzer.preprocessing.scalers import ScalerModel
 from libs.data_loader.data_loader_provider import DataLoaderProvider
 from libs.analyzer.analysis_provider import AnalysisProvider
 from libs.analyzer.analysis_model import AnalysisModel
@@ -11,7 +10,6 @@ from libs.plotting.plot_model import Axis, PlotModel
 from typing import List
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 
 
 SECRET_FILE = './secrets.txt'
@@ -47,11 +45,11 @@ print(f'Model 1: {linear_regression_model.get_model_informations()}')
 
 stats = StatisticalAnalyzer.analyze(scaled_y)
 print(stats)
-entropy: float = StatisticalAnalyzer.calculate_entropy(y1)
+entropy: float = StatisticalAnalyzer.calculate_entropy(scaled_y)
 print(f"Entropia {entropy}")
 
-rel_freq_result: RelfreqResult = StatisticalAnalyzer.relative_frequency(scaled_y, 50, True)
-cum_freq_result: CumfreqResult = StatisticalAnalyzer.cumulated_frequency(scaled_y, 25, True)
+rel_freq_result: RelfreqResult = StatisticalAnalyzer.relative_frequency(scaled_y, 100, True)
+cum_freq_result: CumfreqResult = StatisticalAnalyzer.cumulated_frequency(scaled_y, 50, True)
 
 print(f"Relative frequency: {rel_freq_result}")
 print(f"Cumulated frequency: {cum_freq_result}")
