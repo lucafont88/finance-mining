@@ -39,9 +39,8 @@ scaler_model = ScalerModel('min_max_scaler', -1, 1, None)
 analysys_model: AnalysisModel = AnalysisModel('test_analisi_1', x1, y1)
 analysis_provider: AnalysisProvider = AnalysisProvider(analysys_model)
 scaled_y = analysis_provider.scale_data(scaler_model)
-linear_regression_model = LinearRegression()
 
-analysis_provider.regression(linear_regression_model)
+linear_regression_model = analysis_provider.regression(LinearRegression())
 
 print(f'Model 1: {linear_regression_model.get_model_informations()}')
 

@@ -26,7 +26,7 @@ class AbstractRegression(ABC):
         pass
 
     @abstractmethod
-    def get_model(self):
+    def get_model(self) -> ABC:
         pass
 
     @abstractmethod
