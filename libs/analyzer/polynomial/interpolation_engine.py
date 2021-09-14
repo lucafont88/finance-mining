@@ -22,7 +22,7 @@ class InterpolationEngine:
         y = self.__f(self.x_train)
         X = self.x_train[:, np.newaxis]
         models: Dict[int, Pipeline] = {}
-        for degree in enumerate(self.interpolations_degrees): # Default is [3, 4, 5]
+        for degree in range(min(self.interpolations_degrees), max(self.interpolations_degrees) + 1): # Default is [3, 4, 5]
             model = make_pipeline(PolynomialFeatures(degree), Ridge())
             model.fit(X, y)
             models[degree] = model
@@ -33,8 +33,9 @@ class InterpolationEngine:
         # generate points used to plot
         x_plot = self.__compute_inteporlation_linespace()
         X_plot = x_plot[:, np.newaxis]
-        colors = ['teal', 'yellowgreen', 'gold']
+        colors = ['gold', 'teal', 'yellowgreen', 'pink', 'red'] # TODO: Change to a list of colors accordig to input
         lw = 2
+        fig = plt.figure(figsize=(5, 4))
         plt.plot(x_plot, self.__f(x_plot), color='cornflowerblue', linewidth=lw, label="ground truth")
         plt.scatter(self.x_train, self.__f(self.x_train), color='navy', s=30, marker='o', label="training points")
         count = 0

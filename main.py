@@ -24,6 +24,8 @@ SHOW_PLOTS = False
 OUTPUT_FILE = './output_results.json'
 SECRET_FILE = './secrets.txt'
 CSV_TO_LOAD_FILE = './resourse_to_load.txt'
+INTERPOLATION_DEGREES = [3, 4, 5, 6, 7]
+INTERPOLATION_N_POINTS = 500
 data_loader_provider = DataLoaderProvider(SECRET_FILE, CSV_TO_LOAD_FILE)
 data = data_loader_provider.load_data()
 
@@ -88,7 +90,7 @@ if PROMPT_DEBUG is True:
     ic(x_poly)
     print(f"Dataset shape (expected (n, 2)) = {x_poly.shape}")
 
-poly_models = polynomial_engine.compute_interpolated_polynomial(np_dataset)
+poly_models = polynomial_engine.compute_interpolated_polynomial(np_dataset, INTERPOLATION_DEGREES, INTERPOLATION_N_POINTS)
 
 pp = pprint.PrettyPrinter(depth=4)
 pp.pprint(model_info)
