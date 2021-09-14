@@ -10,7 +10,7 @@ from libs.analyzer.statistical.statistical_analyzer import StatisticalAnalyzer
 from libs.analyzer.regressions.linear_regression import LinearRegression
 from libs.plotting.plot_engine import PlotEngine
 from libs.plotting.plot_model import Axis, PlotModel
-from libs.utility.helpers import merge_dicts
+from libs.utility.helpers import get_numpy_2d_array, merge_dicts
 from typing import Any, Dict, List
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -47,9 +47,9 @@ analysys_model: AnalysisModel = AnalysisModel('test_analisi_1', x1, y1)
 analysis_provider: AnalysisProvider = AnalysisProvider(analysys_model)
 scaled_y = analysis_provider.scale_data(scaler_model)
 
-dataset_list = list(zip(x1, scaled_y[:, 0]))
 # Shape = (len(x1), 2)
-np_dataset = np.array(dataset_list)
+np_dataset = get_numpy_2d_array(x1, scaled_y[:, 0])
+ic(np_dataset)
 
 
 linear_regression_model = analysis_provider.regression(LinearRegression())
