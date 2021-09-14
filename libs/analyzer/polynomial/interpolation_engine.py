@@ -9,10 +9,10 @@ from sklearn.pipeline import Pipeline, make_pipeline
 
 class InterpolationEngine:
 
-    def __init__(self, np_data: np.ndarray, interpolations_degrees: List[int] = [3, 4, 5], interpolation_step: int = 10):
+    def __init__(self, np_data: np.ndarray, interpolations_degrees: List[int] = [3, 4, 5], n_interpolation_step: int = 10):
         self.np_data = np_data
         self.interpolations_degrees = interpolations_degrees
-        self.interpolation_step = interpolation_step
+        self.n_interpolation_step = n_interpolation_step
 
     def create_interpolation_model(self) -> Dict[int, Pipeline]:
         self.x_train = self.__compute_inteporlation_linespace()
@@ -50,7 +50,10 @@ class InterpolationEngine:
     # Private methods
 
     def __compute_inteporlation_linespace(self) -> np.ndarray:
-        return np.linspace(0, self.interpolation_step, len(self.np_data)) 
+        return np.linspace(0, len(self.np_data), self.n_interpolation_step, dtype=int)
 
-    def __f(self, x: int) -> Union[int, float]:
-        return self.np_data[x, 1]
+    def __f(self, x: List[int]) -> Union[int, float]:
+        if max(x) < self.np_data.shape[0]:
+            return self.np_data[x, 1]
+        else:
+            return self.np_data[x - 1, 1]

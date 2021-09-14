@@ -88,6 +88,7 @@ if PROMPT_DEBUG is True:
     ic(x_poly)
     print(f"Dataset shape (expected (n, 2)) = {x_poly.shape}")
 
+poly_models = polynomial_engine.compute_interpolated_polynomial(np_dataset)
 
 pp = pprint.PrettyPrinter(depth=4)
 pp.pprint(model_info)
