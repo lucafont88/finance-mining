@@ -14,18 +14,12 @@ class InterpolationEngine:
         self.interpolations_degrees = interpolations_degrees
         self.interpolation_step = interpolation_step
 
-    def compute_inteporlation_linespace(self) -> np.ndarray:
-        return np.linspace(0, self.interpolation_step, len(self.np_data)) 
-
-    def f(self, x: int) -> Union[int, float]:
-        return self.np_data[x, 1]
-
     def create_interpolation_model(self) -> Dict[int, Pipeline]:
-        self.x_train = self.compute_inteporlation_linespace()
+        self.x_train = self.__compute_inteporlation_linespace()
         rng = np.random.RandomState(0)
         rng.shuffle(self.x_train)
         self.x_train = np.sort(self.x_train[:20])
-        y = self.f(self.x_train)
+        y = self.__f(self.x_train)
         X = self.x_train[:, np.newaxis]
         models: Dict[int, Pipeline] = {}
         for degree in enumerate(self.interpolations_degrees): # Default is [3, 4, 5]
@@ -35,16 +29,16 @@ class InterpolationEngine:
         self.models = models
         return models
 
-    def plot_interpolation_model(self, degree: int) -> None:
+    def plot_interpolation_model(self, degrees: List[int] = [3, 4, 5]) -> None:
         # generate points used to plot
-        x_plot = self.compute_inteporlation_linespace()
+        x_plot = self.__compute_inteporlation_linespace()
         X_plot = x_plot[:, np.newaxis]
         colors = ['teal', 'yellowgreen', 'gold']
         lw = 2
-        plt.plot(x_plot, self.f(x_plot), color='cornflowerblue', linewidth=lw, label="ground truth")
-        plt.scatter(self.x_train, self.f(self.x_train), color='navy', s=30, marker='o', label="training points")
+        plt.plot(x_plot, self.__f(x_plot), color='cornflowerblue', linewidth=lw, label="ground truth")
+        plt.scatter(self.x_train, self.__f(self.x_train), color='navy', s=30, marker='o', label="training points")
         count = 0
-        for degree in self.interpolations_degrees:
+        for degree in degrees:
             y_plot = self.models[degree].predict(X_plot)
             plt.plot(x_plot, y_plot, color=colors[count], linewidth=lw, label="degree %d" % degree)
             count += 1
@@ -52,3 +46,11 @@ class InterpolationEngine:
         plt.show()
 
 
+
+    # Private methods
+
+    def __compute_inteporlation_linespace(self) -> np.ndarray:
+        return np.linspace(0, self.interpolation_step, len(self.np_data)) 
+
+    def __f(self, x: int) -> Union[int, float]:
+        return self.np_data[x, 1]

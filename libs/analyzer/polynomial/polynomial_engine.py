@@ -1,4 +1,7 @@
-from typing import Any, Tuple
+from numpy import ndarray
+from sklearn.pipeline import Pipeline
+from libs.analyzer.polynomial.interpolation_engine import InterpolationEngine
+from typing import Any, Dict, List, Tuple, Union
 from sklearn.preprocessing import PolynomialFeatures
 
 class PolynomialEngine:
@@ -7,3 +10,12 @@ class PolynomialEngine:
         poly = PolynomialFeatures(degree=degree)
         x_poly = poly.fit_transform(np_dataset)
         return poly, x_poly
+
+    def compute_interpolated_polynomial(self, np_dataset: ndarray, degrees: List[int] = [3, 4, 5], step: int = 10, plot_only: bool = False) -> Union[Dict[int, Pipeline], None]:
+        interpolation_engine = InterpolationEngine(np_dataset, degrees, step)
+        models = interpolation_engine.create_interpolation_model()
+        interpolation_engine.plot_interpolation_model()
+        if plot_only is False:
+            return models
+        else:
+            return None
