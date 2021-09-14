@@ -1,12 +1,14 @@
 from typing import Dict, List, Union
 import numpy as np
+import random
+import matplotlib
 import matplotlib.pyplot as plt
 
 from sklearn.linear_model import Ridge
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import Pipeline, make_pipeline
 
-import matplotlib
+
 class InterpolationEngine:
 
     def __init__(self, np_data: np.ndarray, interpolations_degrees: List[int] = [3, 4, 5], n_interpolation_step: int = 10):
@@ -33,7 +35,7 @@ class InterpolationEngine:
         # generate points used to plot
         x_plot = self.__compute_inteporlation_linespace()
         X_plot = x_plot[:, np.newaxis]
-        colors = list((matplotlib.colors.get_named_colors_mapping()).values())
+        colors = self.__get_colors()
         # colors = ['gold', 'teal', 'yellowgreen', 'pink', 'red'] # TODO: Change to a list of colors accordig to input
         lw = 2
         fig = plt.figure(figsize=(5, 4))
@@ -60,3 +62,11 @@ class InterpolationEngine:
             return self.np_data[x, 1]
         else:
             return self.np_data[x - 1, 1]
+
+    __colors = []
+    def __get_colors(self) -> List[str]:
+        if len(self.__colors) > 0:
+            return self.__colors
+        self.__colors = list((matplotlib.colors.get_named_colors_mapping()).values())
+        random.shuffle(self.__colors)
+        return self.__colors
