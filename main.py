@@ -81,7 +81,7 @@ if PROMPT_DEBUG is True:
     print(f"Cumulated frequency: {cum_freq_result}")
 
 polynomial_engine = PolynomialEngine()
-poly, x_poly = polynomial_engine.fit_polynomial(np_dataset, 2)
+poly, x_poly = polynomial_engine.compute_polynomial_features(np_dataset, 2)
 
 if PROMPT_DEBUG is True:
     ic(dir(poly))
