@@ -20,7 +20,7 @@ from icecream import ic
 
 
 PROMPT_DEBUG = False
-SHOW_PLOTS = True
+SHOW_PLOTS = False
 OUTPUT_FILE = './output_results.json'
 SECRET_FILE = './secrets.txt'
 CSV_TO_LOAD_FILE = './resourse_to_load.txt'
@@ -46,6 +46,11 @@ scaler_model = ScalerModel('min_max_scaler', -1, 1, None)
 analysys_model: AnalysisModel = AnalysisModel('test_analisi_1', x1, y1)
 analysis_provider: AnalysisProvider = AnalysisProvider(analysys_model)
 scaled_y = analysis_provider.scale_data(scaler_model)
+
+dataset_list = list(zip(x1, scaled_y[:, 0]))
+# Shape = (len(x1), 2)
+np_dataset = np.array(dataset_list)
+
 
 linear_regression_model = analysis_provider.regression(LinearRegression())
 
