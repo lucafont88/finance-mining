@@ -49,8 +49,9 @@ scaled_y = analysis_provider.scale_data(scaler_model)
 
 # Shape = (len(x1), 2)
 np_dataset = get_numpy_2d_array(x1, scaled_y[:, 0])
-ic(np_dataset)
 
+if PROMPT_DEBUG is True:
+    ic(np_dataset)
 
 linear_regression_model = analysis_provider.regression(LinearRegression())
 
@@ -79,14 +80,14 @@ if PROMPT_DEBUG is True:
     print(f"Relative frequency: {rel_freq_result}")
     print(f"Cumulated frequency: {cum_freq_result}")
 
-# TODO Polynomial Fitting
 polynomial_engine = PolynomialEngine()
-poly, x_poly = polynomial_engine.fit_polynomial(scaled_y, None, 2)
+poly, x_poly = polynomial_engine.fit_polynomial(np_dataset, 2)
 
-ic(poly.powers_)
-ic(x_poly)
+if PROMPT_DEBUG is True:
+    ic(dir(poly))
+    ic(x_poly)
+    print(f"Dataset shape (expected (n, 2)) = {x_poly.shape}")
 
-# Output
 
 pp = pprint.PrettyPrinter(depth=4)
 pp.pprint(model_info)

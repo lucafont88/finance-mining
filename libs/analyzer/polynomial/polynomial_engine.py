@@ -3,7 +3,7 @@ from sklearn.preprocessing import PolynomialFeatures
 
 class PolynomialEngine:
     
-    def fit_polynomial(self, x_train, y_train, degree) -> Tuple[PolynomialFeatures, Any]:
+    def fit_polynomial(self, np_dataset, degree) -> Tuple[PolynomialFeatures, Any]:
         poly = PolynomialFeatures(degree=degree)
-        x_poly = poly.fit_transform(x_train)
+        x_poly = poly.fit_transform(np_dataset)
         return poly, x_poly
