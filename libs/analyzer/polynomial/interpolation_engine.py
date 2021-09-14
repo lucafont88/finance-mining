@@ -6,7 +6,7 @@ from sklearn.linear_model import Ridge
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import Pipeline, make_pipeline
 
-
+import matplotlib
 class InterpolationEngine:
 
     def __init__(self, np_data: np.ndarray, interpolations_degrees: List[int] = [3, 4, 5], n_interpolation_step: int = 10):
@@ -33,12 +33,14 @@ class InterpolationEngine:
         # generate points used to plot
         x_plot = self.__compute_inteporlation_linespace()
         X_plot = x_plot[:, np.newaxis]
-        colors = ['gold', 'teal', 'yellowgreen', 'pink', 'red'] # TODO: Change to a list of colors accordig to input
+        colors = list((matplotlib.colors.get_named_colors_mapping()).values())
+        # colors = ['gold', 'teal', 'yellowgreen', 'pink', 'red'] # TODO: Change to a list of colors accordig to input
         lw = 2
         fig = plt.figure(figsize=(5, 4))
         plt.plot(x_plot, self.__f(x_plot), color='cornflowerblue', linewidth=lw, label="ground truth")
         plt.scatter(self.x_train, self.__f(self.x_train), color='navy', s=30, marker='o', label="training points")
         count = 0
+        
         for degree in degrees:
             y_plot = self.models[degree].predict(X_plot)
             plt.plot(x_plot, y_plot, color=colors[count], linewidth=lw, label="degree %d" % degree)
