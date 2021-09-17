@@ -4,6 +4,10 @@ class ConfigurationReader:
     """
     After calling the constructor, you must call the read_configuration_file method in order collect settings
     """
+    INTERPOLATION_DEGREES_TOKEN: str = 'INTERPOLATION_DEGREES'
+    INTERPOLATION_N_POINTS_TOKEN: str = 'INTERPOLATION_N_POINTS'
+    CSV_TO_LOAD_FILE_TOKEN: str = 'CSV_TO_LOAD_FILE'
+    OUTPUT_FILE_TOKEN: str = 'OUTPUT_FILE'
 
     def __init__(self, configuration_file: str):
         """
