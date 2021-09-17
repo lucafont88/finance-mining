@@ -1,3 +1,4 @@
+from libs.analyzer.engines.linear_analyzer_engine import LinearAnalyzerEngine
 from libs.analyzer.polynomial.polynomial_engine import PolynomialEngine
 from numpy import inf
 from libs.data_output.file_saver import FileSaver
@@ -24,10 +25,14 @@ SHOW_PLOTS = False
 OUTPUT_FILE = './output_results.json'
 SECRET_FILE = './secrets.txt'
 CSV_TO_LOAD_FILE = './resourse_to_load.txt'
-INTERPOLATION_DEGREES = [3, 4, 5, 6, 7, 8, 9, 10]
+INTERPOLATION_DEGREES = [4, 10]
 INTERPOLATION_N_POINTS = 500
-data_loader_provider = DataLoaderProvider(SECRET_FILE, CSV_TO_LOAD_FILE)
-data = data_loader_provider.load_data()
+# data_loader_provider = DataLoaderProvider(SECRET_FILE)
+# data = data_loader_provider.load_data(CSV_TO_LOAD_FILE)
+
+linear_analyzer_engine = LinearAnalyzerEngine(SECRET_FILE)
+linear_analyzer_engine.load(CSV_TO_LOAD_FILE)
+
 
 intraday: pd.DataFrame = data[0]
 # daily: pd.DataFrame = data[1]
