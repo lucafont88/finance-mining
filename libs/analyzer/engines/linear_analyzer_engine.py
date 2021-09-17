@@ -1,5 +1,7 @@
 
 
+from libs.configuration.configuration_reader import ConfigurationReader
+from libs.security.secret_manager import SecretManager
 from libs.data_output.file_saver import FileSaver
 from libs.analyzer.polynomial.polynomial_engine import PolynomialEngine
 from scipy.stats.stats import CumfreqResult, DescribeResult, RelfreqResult
@@ -21,15 +23,24 @@ from icecream import ic
 
 class LinearAnalyzerEngine:
 
-    def __init__(self, secret_file_path: str, prompt_debug: bool = False):
-        self.__data_loader_provider = DataLoaderProvider(secret_file_path)
+    def __init__(self, secret_manager: SecretManager, configuration_reader: ConfigurationReader, prompt_debug: bool = False):
+        self.__data_loader_provider = DataLoaderProvider(secret_manager)
+        self.__confguration_reader = configuration_reader
         self.__PROMPT_DEBUG = prompt_debug
 
-    def load(self, csv_file_to_load):
+    def run(self, csv_file_to_load):
+        self.__load(csv_file_to_load)
+        self.__analyze('high', 'index')
+        self.__plot()
+
+
+    #Private methods
+
+    def __load(self, csv_file_to_load):
         data = self.__data_loader_provider.load_data(csv_file_to_load)
         self.__data: pd.DataFrame = data[0]
 
-    def analyze(self, feature_to_analyze: Literal['open', 'high', 'low', 'close', 'volume'], index_key: str = 'index'):
+    def __analyze(self, feature_to_analyze: Literal['open', 'high', 'low', 'close', 'volume'], index_key: str = 'index'):
         axis: Axis = Axis(feature_to_analyze, list(self.__data[index_key]), list(self.__data[feature_to_analyze]))
         self.__plot_model = PlotModel('EurUsd daily 1min', 'tick', 'price', [axis])
         
@@ -87,15 +98,12 @@ class LinearAnalyzerEngine:
         # Prompt debug if required
         self.__prompt_debug(np_dataset, linear_regression_model, stats, rel_freq_result, cum_freq_result, entropy, x_poly)
 
-    def plot(self):
+    def __plot(self):
         plot_engine = PlotEngine()
         plot_engine.plot(self.__plot_model)
         SHOW_PLOTS = False
         if SHOW_PLOTS is True:
             plt.show()
-
-
-    #Private methods
 
     def __prompt_debug(self, 
                     np_dataset: np.ndarray, 

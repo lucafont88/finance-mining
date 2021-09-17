@@ -5,7 +5,7 @@ class SecretManager:
     After calling the constructor, you must call the read_secrets_file method in order to fill the dictionary with secrets
     """
 
-    ATLAS_MONGO_DB_CONNECTION_STRING_TOKEN: str = 'ATLAS_MONGO_DB_CONNECTION_STRING'
+    FINFETCH_CSV_REPOSITORY_URL_TOKEN: str = 'FINFETCH_CSV_REPOSITORY_URL'
 
     def __init__(self, secret_file: str):
         """
@@ -44,13 +44,13 @@ class SecretManager:
         """
         return self.__get_secret(secret_key)
 
-    def get_mongo_connection_string(self) -> str:
+    def get_csv_repository_url(self) -> str:
         """
-        Returns the connection string for MongoDB
+        Return the csv repository url
 
-        :return: The connection string
+        :return: The csv repository url
         """
-        return self.__get_secret(self.ATLAS_MONGO_DB_CONNECTION_STRING_TOKEN)
+        return self.__get_secret(self.FINFETCH_CSV_REPOSITORY_URL_TOKEN)
 
     # Private methods
     def __get_secret(self, secret_key: str) -> str:
