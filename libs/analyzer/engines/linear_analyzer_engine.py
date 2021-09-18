@@ -29,11 +29,13 @@ class LinearAnalyzerEngine:
         self.__confguration_reader = configuration_reader
         self.__PROMPT_DEBUG = prompt_debug
 
-    def run(self, csv_file_to_load, feature_to_analyze: Literal['open', 'high', 'low', 'close', 'volume'], index_key: str = 'index') -> Dict[str, Any]:
+    def run(self, 
+            csv_file_to_load, feature_to_analyze: Literal['open', 'high', 'low', 'close', 'volume'], 
+            index_key: str = 'index') -> Union[DescribeResult, RelfreqResult, CumfreqResult, Dict[str, Any], Dict[int, Pipeline], PlotModel]:
         self.__load(csv_file_to_load)
-        model_info = self.__analyze(feature_to_analyze, index_key)
+        stats, rel_freq_result, cum_freq_result, model_info, poly_models, plot_model = self.__analyze(feature_to_analyze, index_key)
         self.__plot()
-        return model_info
+        return stats, rel_freq_result, cum_freq_result, model_info, poly_models, plot_model
 
 
     #Private methods
