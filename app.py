@@ -17,11 +17,11 @@ poly_models: Dict[int, Pipeline] = {}
 plot_model: PlotModel = None
 stats, rel_freq_result, cum_freq_result, model_info, poly_models, plot_model = finance_mining_service.run()
 
-# st.write(stats)
+st.write(str(stats))
 
-# st.write(rel_freq_result)
+st.write(str(rel_freq_result))
 
-# st.write(cum_freq_result)
+st.write(str(cum_freq_result))
 
 st.write(model_info)
 
