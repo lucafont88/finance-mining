@@ -13,7 +13,7 @@ from libs.analyzer.analysis_model import AnalysisModel
 from libs.analyzer.preprocessing.scalers import ScalerModel
 from libs.plotting.plot_engine import PlotEngine
 from libs.plotting.plot_model import Axis, PlotModel
-from typing import Any, Dict, Literal
+from typing import Any, Dict, List, Literal
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -28,19 +28,20 @@ class LinearAnalyzerEngine:
         self.__confguration_reader = configuration_reader
         self.__PROMPT_DEBUG = prompt_debug
 
-    def run(self, csv_file_to_load):
+    def run(self, csv_file_to_load, feature_to_analyze: Literal['open', 'high', 'low', 'close', 'volume'], index_key: str = 'index') -> Dict[str, Any]:
         self.__load(csv_file_to_load)
-        self.__analyze('high', 'index')
+        model_info = self.__analyze(feature_to_analyze, index_key)
         self.__plot()
+        return model_info
 
 
     #Private methods
 
-    def __load(self, csv_file_to_load):
+    def __load(self, csv_file_to_load) -> None:
         data = self.__data_loader_provider.load_data(csv_file_to_load)
         self.__data: pd.DataFrame = data[0]
 
-    def __analyze(self, feature_to_analyze: Literal['open', 'high', 'low', 'close', 'volume'], index_key: str = 'index'):
+    def __analyze(self, feature_to_analyze: Literal['open', 'high', 'low', 'close', 'volume'], index_key: str = 'index') -> Dict[str, Any]:
         axis: Axis = Axis(feature_to_analyze, list(self.__data[index_key]), list(self.__data[feature_to_analyze]))
         self.__plot_model = PlotModel('EurUsd daily 1min', 'tick', 'price', [axis])
         
@@ -80,8 +81,8 @@ class LinearAnalyzerEngine:
         model_info: Dict[str, Any] = merge_dicts(linear_regression_model.get_model_informations(), stats._asdict())
 
         # Fit polynomial model 
-        INTERPOLATION_DEGREES = [4, 10]
-        INTERPOLATION_N_POINTS = 500 
+        INTERPOLATION_DEGREES: List[int] = self.__confguration_reader.get_interpolation_degree_list()
+        INTERPOLATION_N_POINTS: int = self.__confguration_reader.get_interpolation_n_samples() 
         polynomial_engine = PolynomialEngine()
         poly, x_poly = polynomial_engine.compute_polynomial_features(np_dataset, 2)
         poly_models = polynomial_engine.compute_interpolated_polynomial(np_dataset, INTERPOLATION_DEGREES, INTERPOLATION_N_POINTS)
@@ -91,12 +92,15 @@ class LinearAnalyzerEngine:
         pp.pprint(model_info)
 
         # Save model as json on file
-        OUTPUT_FILE = './output_results.json'
+        OUTPUT_FILE: str = self.__confguration_reader.get_secret(self.__confguration_reader.OUTPUT_FILE_TOKEN)
         file_saver = FileSaver(OUTPUT_FILE)
         file_saver.save_json(model_info)
 
         # Prompt debug if required
         self.__prompt_debug(np_dataset, linear_regression_model, stats, rel_freq_result, cum_freq_result, entropy, x_poly)
+
+        # Return dictionary with model information
+        return model_info
 
     def __plot(self):
         plot_engine = PlotEngine()

@@ -1,4 +1,4 @@
-from typing import Dict, Union
+from typing import Dict, List, Union
 
 class ConfigurationReader:
     """
@@ -44,18 +44,24 @@ class ConfigurationReader:
 
         :return: The secret value
         """
-        return self.__get_secret(secret_key)
+        return self.__get_value(secret_key)
 
-    def get_mongo_connection_string(self) -> str:
+    def get_interpolation_degree_list(self) -> List[int]:
         """
         Returns the connection string for MongoDB
 
         :return: The connection string
         """
-        return self.__get_secret(self.ATLAS_MONGO_DB_CONNECTION_STRING_TOKEN)
+        interpolation_degrees_str = self.__get_value(self.INTERPOLATION_DEGREES_TOKEN)
+        interolation_degrees: List[str] = interpolation_degrees_str.replace("[", "").replace("]", "").split(',')
+        interolation_degrees_list: List[int] = [int(degree) for degree in interolation_degrees]
+        return interolation_degrees_list
+
+    def get_interpolation_n_samples(self) -> int:
+        return int(self.__get_value(self.INTERPOLATION_N_POINTS_TOKEN))
 
     # Private methods
-    def __get_secret(self, secret_key: str) -> str:
+    def __get_value(self, secret_key: str) -> str:
         """
         Return the secret value for the given key
 
@@ -63,4 +69,4 @@ class ConfigurationReader:
 
         :return: The secret value
         """
-        return self.secrets[secret_key]
+        return self.configurations[secret_key]
