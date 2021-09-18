@@ -27,9 +27,10 @@ class AnalysisProvider:
         else:
             return None
 
-    def regression(self, regressor_engine: AbstractRegression, **kwargs) -> AbstractRegression:
+    def regression(self, regressor_engine: AbstractRegression, plot_graph: bool, **kwargs) -> AbstractRegression:
         regressor_engine.set_x(self.__analysis_model.X)
         regressor_engine.set_y(self.__analysis_model.Y)
         regressor_engine.train()
-        regressor_engine.plot_model(**kwargs)
+        if plot_graph is True:
+            regressor_engine.plot_model(**kwargs)
         return regressor_engine

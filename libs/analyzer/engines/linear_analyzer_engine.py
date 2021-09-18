@@ -1,5 +1,6 @@
 
 
+from sklearn.pipeline import Pipeline
 from libs.configuration.configuration_reader import ConfigurationReader
 from libs.security.secret_manager import SecretManager
 from libs.data_output.file_saver import FileSaver
@@ -13,7 +14,7 @@ from libs.analyzer.analysis_model import AnalysisModel
 from libs.analyzer.preprocessing.scalers import ScalerModel
 from libs.plotting.plot_engine import PlotEngine
 from libs.plotting.plot_model import Axis, PlotModel
-from typing import Any, Dict, List, Literal
+from typing import Any, Dict, List, Literal, Union
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -41,7 +42,9 @@ class LinearAnalyzerEngine:
         data = self.__data_loader_provider.load_data(csv_file_to_load)
         self.__data: pd.DataFrame = data[0]
 
-    def __analyze(self, feature_to_analyze: Literal['open', 'high', 'low', 'close', 'volume'], index_key: str = 'index') -> Dict[str, Any]:
+    def __analyze(self, 
+                feature_to_analyze: Literal['open', 'high', 'low', 'close', 'volume'], 
+                index_key: str = 'index') -> Union[DescribeResult, RelfreqResult, CumfreqResult, Dict[str, Any], Dict[int, Pipeline], PlotModel]:
         axis: Axis = Axis(feature_to_analyze, list(self.__data[index_key]), list(self.__data[feature_to_analyze]))
         self.__plot_model = PlotModel('EurUsd daily 1min', 'tick', 'price', [axis])
         
@@ -60,8 +63,8 @@ class LinearAnalyzerEngine:
 
         # Statistical Analysis
         stats: DescribeResult = StatisticalAnalyzer.analyze(scaled_y)
-        rel_freq_result: RelfreqResult = StatisticalAnalyzer.relative_frequency(scaled_y, 100, True)
-        cum_freq_result: CumfreqResult = StatisticalAnalyzer.cumulated_frequency(scaled_y, 50, True)
+        rel_freq_result: RelfreqResult = StatisticalAnalyzer.relative_frequency(scaled_y, 100, False)
+        cum_freq_result: CumfreqResult = StatisticalAnalyzer.cumulated_frequency(scaled_y, 50, False)
 
         entropy: float = StatisticalAnalyzer.calculate_entropy(scaled_y)
 
@@ -75,7 +78,7 @@ class LinearAnalyzerEngine:
 
 
         # Linear regression
-        linear_regression_model = analysis_provider.regression(LinearRegression())
+        linear_regression_model = analysis_provider.regression(LinearRegression(), False)
 
         # Gather information in a dictionary
         model_info: Dict[str, Any] = merge_dicts(linear_regression_model.get_model_informations(), stats._asdict())
@@ -85,7 +88,7 @@ class LinearAnalyzerEngine:
         INTERPOLATION_N_POINTS: int = self.__confguration_reader.get_interpolation_n_samples() 
         polynomial_engine = PolynomialEngine()
         poly, x_poly = polynomial_engine.compute_polynomial_features(np_dataset, 2)
-        poly_models = polynomial_engine.compute_interpolated_polynomial(np_dataset, INTERPOLATION_DEGREES, INTERPOLATION_N_POINTS)
+        poly_models = polynomial_engine.compute_interpolated_polynomial(np_dataset, INTERPOLATION_DEGREES, INTERPOLATION_N_POINTS, False)
     
         # Print model information
         pp = pprint.PrettyPrinter(depth=4)
@@ -100,13 +103,13 @@ class LinearAnalyzerEngine:
         self.__prompt_debug(np_dataset, linear_regression_model, stats, rel_freq_result, cum_freq_result, entropy, x_poly)
 
         # Return dictionary with model information
-        return model_info
+        return stats, rel_freq_result, cum_freq_result, model_info, poly_models, self.__plot_model
 
     def __plot(self):
-        plot_engine = PlotEngine()
-        plot_engine.plot(self.__plot_model)
         SHOW_PLOTS = False
         if SHOW_PLOTS is True:
+            plot_engine = PlotEngine()
+            plot_engine.plot(self.__plot_model)
             plt.show()
 
     def __prompt_debug(self, 
