@@ -1,3 +1,4 @@
+from libs.plotting.plot_engine import PlotEngine
 from libs.plotting.plot_model import PlotModel
 from typing import Any, Dict
 from scipy.stats.stats import CumfreqResult, DescribeResult, RelfreqResult
@@ -15,7 +16,9 @@ cum_freq_result: CumfreqResult = None
 model_info: Dict[str, Any] = {}
 poly_models: Dict[int, Pipeline] = {}
 plot_model: PlotModel = None
-stats, rel_freq_result, cum_freq_result, model_info, poly_models, plot_model = finance_mining_service.run()
+stats, rel_freq_result, cum_freq_result, model_info, poly_models, poly_models_figure, plot_model = finance_mining_service.run()
+
+plot_engine = PlotEngine()
 
 st.write(stats._asdict())
 
@@ -25,6 +28,7 @@ st.bar_chart(cum_freq_result.cumcount)
 
 st.write(model_info)
 
-# st.write(poly_models)
+fig = plot_engine.get_figure(plot_model)
+st.write(fig)
 
-# st.write(plot_model)
+st.write(poly_models_figure)

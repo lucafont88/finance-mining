@@ -33,9 +33,9 @@ class LinearAnalyzerEngine:
             csv_file_to_load, feature_to_analyze: Literal['open', 'high', 'low', 'close', 'volume'], 
             index_key: str = 'index') -> Union[DescribeResult, RelfreqResult, CumfreqResult, Dict[str, Any], Dict[int, Pipeline], PlotModel]:
         self.__load(csv_file_to_load)
-        stats, rel_freq_result, cum_freq_result, model_info, poly_models, plot_model = self.__analyze(feature_to_analyze, index_key)
+        stats, rel_freq_result, cum_freq_result, model_info, poly_models, poly_models_figure, plot_model = self.__analyze(feature_to_analyze, index_key)
         self.__plot()
-        return stats, rel_freq_result, cum_freq_result, model_info, poly_models, plot_model
+        return stats, rel_freq_result, cum_freq_result, model_info, poly_models, poly_models_figure, plot_model
 
 
     #Private methods
@@ -90,7 +90,7 @@ class LinearAnalyzerEngine:
         INTERPOLATION_N_POINTS: int = self.__confguration_reader.get_interpolation_n_samples() 
         polynomial_engine = PolynomialEngine()
         poly, x_poly = polynomial_engine.compute_polynomial_features(np_dataset, 2)
-        poly_models = polynomial_engine.compute_interpolated_polynomial(np_dataset, INTERPOLATION_DEGREES, INTERPOLATION_N_POINTS, False)
+        poly_models, poly_models_figure = polynomial_engine.compute_interpolated_polynomial(np_dataset, INTERPOLATION_DEGREES, INTERPOLATION_N_POINTS, False)
     
         # Print model information
         pp = pprint.PrettyPrinter(depth=4)
@@ -105,7 +105,7 @@ class LinearAnalyzerEngine:
         self.__prompt_debug(np_dataset, linear_regression_model, stats, rel_freq_result, cum_freq_result, entropy, x_poly)
 
         # Return dictionary with model information
-        return stats, rel_freq_result, cum_freq_result, model_info, poly_models, self.__plot_model
+        return stats, rel_freq_result, cum_freq_result, model_info, poly_models, poly_models_figure, self.__plot_model
 
     def __plot(self):
         SHOW_PLOTS = False

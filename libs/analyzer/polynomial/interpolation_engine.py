@@ -31,7 +31,7 @@ class InterpolationEngine:
         self.models = models
         return models
 
-    def plot_interpolation_model(self, degrees: List[int] = [3, 4, 5]) -> None:
+    def plot_interpolation_model(self, degrees: List[int] = [3, 4, 5], do_plot: bool = False) -> plt.Figure:
         # generate points used to plot
         x_plot = self.__compute_inteporlation_linespace()
         X_plot = x_plot[:, np.newaxis]
@@ -48,7 +48,11 @@ class InterpolationEngine:
             plt.plot(x_plot, y_plot, color=colors[count], linewidth=lw, label="degree %d" % degree)
             count += 1
         plt.legend(loc='lower left')
-        plt.show()
+        if do_plot:
+            plt.show()
+            
+        return fig
+        
 
 
 
