@@ -16,7 +16,7 @@ cum_freq_result: CumfreqResult = None
 model_info: Dict[str, Any] = {}
 poly_models: Dict[int, Pipeline] = {}
 plot_model: PlotModel = None
-stats, rel_freq_result, cum_freq_result, model_info, poly_models, poly_models_figure, plot_model = finance_mining_service.run()
+stats, rel_freq_result, cum_freq_result, model_info, poly_models, poly_models_figure, plot_model, figure_linear_regression = finance_mining_service.run()
 
 plot_engine = PlotEngine()
 
@@ -32,3 +32,5 @@ fig = plot_engine.get_figure(plot_model)
 st.write(fig)
 
 st.write(poly_models_figure)
+
+st.write(figure_linear_regression)

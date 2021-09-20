@@ -33,9 +33,9 @@ class LinearAnalyzerEngine:
             csv_file_to_load, feature_to_analyze: Literal['open', 'high', 'low', 'close', 'volume'], 
             index_key: str = 'index') -> Union[DescribeResult, RelfreqResult, CumfreqResult, Dict[str, Any], Dict[int, Pipeline], PlotModel]:
         self.__load(csv_file_to_load)
-        stats, rel_freq_result, cum_freq_result, model_info, poly_models, poly_models_figure, plot_model = self.__analyze(feature_to_analyze, index_key)
+        stats, rel_freq_result, cum_freq_result, model_info, poly_models, poly_models_figure, plot_model, figure_linear_regression = self.__analyze(feature_to_analyze, index_key)
         self.__plot()
-        return stats, rel_freq_result, cum_freq_result, model_info, poly_models, poly_models_figure, plot_model
+        return stats, rel_freq_result, cum_freq_result, model_info, poly_models, poly_models_figure, plot_model, figure_linear_regression
 
 
     #Private methods
@@ -80,7 +80,9 @@ class LinearAnalyzerEngine:
 
 
         # Linear regression
-        linear_regression_model = analysis_provider.regression(LinearRegression(), False)
+        linear_regression_model: LinearRegression = None
+        figure_linear_regression: plt.Figure = None
+        linear_regression_model, figure_linear_regression = analysis_provider.regression(LinearRegression())
 
         # Gather information in a dictionary
         model_info: Dict[str, Any] = merge_dicts(linear_regression_model.get_model_informations(), stats._asdict())
@@ -105,7 +107,7 @@ class LinearAnalyzerEngine:
         self.__prompt_debug(np_dataset, linear_regression_model, stats, rel_freq_result, cum_freq_result, entropy, x_poly)
 
         # Return dictionary with model information
-        return stats, rel_freq_result, cum_freq_result, model_info, poly_models, poly_models_figure, self.__plot_model
+        return stats, rel_freq_result, cum_freq_result, model_info, poly_models, poly_models_figure, self.__plot_model, figure_linear_regression
 
     def __plot(self):
         SHOW_PLOTS = False

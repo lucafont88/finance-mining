@@ -1,10 +1,9 @@
 
-from libs.analyzer.regressions.abstract_regression import AbstractRegression
 from libs.analyzer.regressions.linear_regression import LinearRegression
 from libs.analyzer.analysis_model import AnalysisModel
 from libs.analyzer.preprocessing.scalers import ScalerModel, apply_scaler
-from typing import Dict, List, Literal, Union
-
+from typing import Dict, List, Union
+import matplotlib.pyplot as plt 
 
 class AnalysisProvider:
 
@@ -27,10 +26,9 @@ class AnalysisProvider:
         else:
             return None
 
-    def regression(self, regressor_engine: AbstractRegression, plot_graph: bool, **kwargs) -> AbstractRegression:
-        regressor_engine.set_x(self.__analysis_model.X)
-        regressor_engine.set_y(self.__analysis_model.Y)
-        regressor_engine.train()
-        if plot_graph is True:
-            regressor_engine.plot_model(**kwargs)
-        return regressor_engine
+    def regression(self, linear_regressor_engine: LinearRegression, **kwargs) -> Union[LinearRegression, plt.Figure]:
+        linear_regressor_engine.set_x(self.__analysis_model.X)
+        linear_regressor_engine.set_y(self.__analysis_model.Y)
+        linear_regressor_engine.train()
+        figure = linear_regressor_engine.plot_model(**kwargs)
+        return linear_regressor_engine, figure

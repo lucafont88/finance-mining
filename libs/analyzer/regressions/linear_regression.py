@@ -1,13 +1,10 @@
-from libs.analyzer.regressions.abstract_regression import AbstractRegression
 from typing import List
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import linear_model
 import numpy as np
 
-class LinearRegression(AbstractRegression):
-    def __init__(self):
-        super().__init__()
+class LinearRegression():
 
     def set_x(self, x: List[float]) -> None:
         self.X = x
@@ -37,7 +34,7 @@ class LinearRegression(AbstractRegression):
             'linear_regression_parameters': self.reg.get_params()
         }
         
-    def plot_model(self, title: str = 'Linear Regression Model', x_label: str = 'X', y_label: str = 'Y', scatter_size: int = 2, scatter_color: str = 'red'):
+    def plot_model(self, title: str = 'Linear Regression Model', x_label: str = 'X', y_label: str = 'Y', scatter_size: int = 2, scatter_color: str = 'red') -> plt.Figure:
         fig, axs = plt.subplots()
         scatter_size = 2
         axs.set_title(title)
@@ -46,3 +43,4 @@ class LinearRegression(AbstractRegression):
         prediction = self.reg.predict(self.np_X)
         axs.scatter(self.np_X[:], self.np_Y[:], s=scatter_size, color=scatter_color)
         axs.plot(self.np_X[:], prediction, '-')
+        return fig
