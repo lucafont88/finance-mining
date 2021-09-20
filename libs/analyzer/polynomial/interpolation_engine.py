@@ -47,7 +47,7 @@ class InterpolationEngine:
             y_plot = self.models[degree].predict(X_plot)
             plt.plot(x_plot, y_plot, color=colors[count], linewidth=lw, label="degree %d" % degree)
             count += 1
-        plt.legend(loc='lower left')
+        plt.legend(loc='upper right')
         if do_plot:
             plt.show()
             
