@@ -6,8 +6,6 @@ from sklearn.pipeline import Pipeline
 from finance_mining_service import FinanceMiningService
 import streamlit as st
 
-st.title('FinFetch Analyzer')
-
 PROMPT_DEBUG = False
 finance_mining_service = FinanceMiningService(PROMPT_DEBUG)
 stats: DescribeResult = None
@@ -20,6 +18,17 @@ stats, rel_freq_result, cum_freq_result, model_info, poly_models, poly_models_fi
 
 plot_engine = PlotEngine()
 
+
+options_sequence = ['', 'EurUsd', 'IBM', 'Gold', 'UsdJpy']
+option = st.sidebar.selectbox(
+    'Choose a Forex symbol',
+     options_sequence)
+
+st.title(f'FinFetch Analyzer: {option}')
+
+if option is None or option == '':
+    st.stop()
+    
 st.write(stats._asdict())
 
 st.bar_chart(rel_freq_result.frequency)
@@ -29,8 +38,9 @@ st.bar_chart(cum_freq_result.cumcount)
 st.write(model_info)
 
 fig = plot_engine.get_figure(plot_model)
-st.write(fig)
+    
+st.pyplot(fig)
 
-st.write(poly_models_figure)
+st.pyplot(poly_models_figure)
 
-st.write(figure_linear_regression)
+st.pyplot(figure_linear_regression)
