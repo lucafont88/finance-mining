@@ -28,7 +28,7 @@ st.title(f'FinFetch Analyzer: {option}')
 
 if option is None or option == '':
     st.stop()
-    
+
 st.write(stats._asdict())
 
 st.bar_chart(rel_freq_result.frequency)
@@ -39,8 +39,9 @@ st.write(model_info)
 
 fig = plot_engine.get_figure(plot_model)
     
-st.pyplot(fig)
+with st.container():
+    st.pyplot(fig)
 
-st.pyplot(poly_models_figure)
+    st.pyplot(poly_models_figure)
 
-st.pyplot(figure_linear_regression)
+    st.pyplot(figure_linear_regression)
